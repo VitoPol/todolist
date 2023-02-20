@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  front:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - 80:80
+    depends_on:
+      - api
+  api:
+    image: vitopol/todolist-api:version-1
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    tty: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    ports:
+      - 8000:8000
+    volumes:
+      - ./.docker_env:/app/.env
+  migrations:
+    image: vitopol/todolist-api:version-1
+    command: bash -c "python manage.py migrate"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./.docker_env:/app/.env
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12321
+      POSTGRES_DB: todolistdb
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
