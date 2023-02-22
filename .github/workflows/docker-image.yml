@@ -1,4 +1,4 @@
-name: Docker Image
+name: Build and Deploy
 
 on:
   push:
@@ -10,21 +10,51 @@ env:
 
 jobs:
 
-  build:
+  build_and_push:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Build the Docker image
       run: docker build -t ${{ env.user }}/todolist-api:${{ env.version }} .
-      
+
     - name: Docker login
       uses: docker/login-action@v2.1.0
       with:
         username: ${{ env.user }}
         password: ${{ secrets.DOCKER_TOKEN }}
-          
+
     - name: Push the Docker image
       run: docker push ${{ env.user }}/todolist-api:${{ env.version }}
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    needs: build_and_push
+
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+
+    steps:
+
+    - name: clone code
+      uses: actions/checkout@v2
+
+    - name: render configs
+      run: |
+        mkdir deploy
+        cat docker-compose-ci.yaml | envsubst > deploy/docker-compose.yaml
+        cat .docker_env | envsubst > deploy/.docker_env
+
+    - name: clone files to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        source: "deploy/docker-compose.yaml"
+        target: "app"
+        strip_components: 1
