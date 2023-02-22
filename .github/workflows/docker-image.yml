@@ -36,8 +36,6 @@ jobs:
     needs: build_and_push
     
     env:
-			# Здесь мы в секретах гитхаба добавили еще два секрета DB_PASSWORD и DB_NAME
-      # и пробросили 
       DB_URL: ${{ secrets.DB_URL }}
       
     steps:
