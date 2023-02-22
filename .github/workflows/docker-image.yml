@@ -69,4 +69,4 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd app
-          sudo -S docker-compose up -d
+          echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
