@@ -9,7 +9,7 @@ services:
       - api
   api:
     image: vitopol/todolist-api:$GITHUB_RUN_ID
-    command: bash -c "python3 manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
     tty: true
     depends_on:
       postgres:
@@ -22,7 +22,7 @@ services:
       - ./.docker_env:/app/.env
   migrations:
     image: vitopol/todolist-api:$GITHUB_RUN_ID
-    command: bash -c "python3 manage.py migrate"
+    command: bash -c "python manage.py migrate"
     depends_on:
       postgres:
         condition: service_healthy
