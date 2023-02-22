@@ -60,3 +60,13 @@ jobs:
         source: "deploy/docker-compose.yaml"
         target: "app"
         strip_components: 1
+
+    - name: run docker-compose
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd app
+          sudo -S docker-compose up -d
