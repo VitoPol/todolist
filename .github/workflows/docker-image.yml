@@ -39,6 +39,7 @@ jobs:
       DB_URL: ${{ secrets.DB_URL }}
       DB_NAME: ${{ secrets.DB_NAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      version: $GITHUB_RUN_ID
 
     steps:
     
