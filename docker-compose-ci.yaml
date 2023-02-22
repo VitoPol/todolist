@@ -8,8 +8,8 @@ services:
     depends_on:
       - api
   api:
-    image: vitopol/todolist-api:4243071413
-    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    image: vitopol/todolist-api
+    command: bash -c "python3 manage.py runserver 0.0.0.0:8000"
     tty: true
     depends_on:
       postgres:
@@ -21,8 +21,8 @@ services:
     volumes:
       - ./.docker_env:/app/.env
   migrations:
-    image: vitopol/todolist-api:4243071413
-    command: bash -c "python manage.py migrate"
+    image: vitopol/todolist-api
+    command: bash -c "python3 manage.py migrate"
     depends_on:
       postgres:
         condition: service_healthy
