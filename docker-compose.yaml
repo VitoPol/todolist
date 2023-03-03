@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   front:
-    image: sermalenk/skypro-front:lesson-34
+    image: sermalenk/skypro-front:lesson-35
     ports:
       - 80:80
     depends_on:
@@ -20,7 +20,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./.docker_env:/app/.env
+      - ./.local_docker_env:/app/.env
   migrations:
     build:
       context: .
@@ -29,7 +29,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./.docker_env:/app/.env
+      - ./.local_docker_env:/app/.env
   postgres:
     image: postgres
     environment:
