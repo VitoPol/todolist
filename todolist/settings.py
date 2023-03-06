@@ -154,5 +154,5 @@ APPEND_SLASH = False
 SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ.get("VK_KEY", None)
 SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ.get("VK_SECRET", None)
 
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/categories'
 # SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
