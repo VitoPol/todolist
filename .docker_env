@@ -1,3 +1,5 @@
 DEBUG=False
 SECRET_KEY=django-insecure-bzx6%*9cps-i%1)t&)w1(h6xs(!g^f@2u2tr+!v0sws49lgbhg
 DATABASE_URL=$DB_URL
+VK_KEY=$VK_KEY
+VK_SECRET=$VK_SECRET

@@ -40,7 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
+
+    # 'oauth2_provider',
+    'social_django',
+    # 'rest_framework_social_oauth2',
+
     'core'
 ]
 
@@ -84,6 +90,8 @@ DATABASES = {
     )
 }
 
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -121,10 +129,19 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
+# SOCIAL_AUTH_AUTHENTICATION_BACKENDS = [
+#     'social_core.backends.vk.VKOAuth2',
+# ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ]
 }
 
@@ -133,3 +150,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.User'
 
 APPEND_SLASH = False
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ.get("VK_KEY", None)
+SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ.get("VK_SECRET", None)
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
