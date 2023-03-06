@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from rest_framework.authentication import SessionAuthentication
@@ -46,6 +46,7 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         logout(request)
+        return HttpResponseRedirect('/')
 
 
 class PasswordUpdateView(UpdateAPIView):
