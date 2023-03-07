@@ -44,13 +44,11 @@ class PasswordUpdateSerializer(serializers.ModelSerializer):
         fields = ("old_password", "new_password")
 
     def validate_old_password(self, value):
-        if not authenticate(self.context['request'], username=self.context['request'].user.username, password=value):
+        if not self.instance.check_password(value):
             raise ValidationError("Incorrect password")
         return value
 
     def update(self, instance, validated_data):
-        instance.set_password(validated_data.pop("new_password"))
-        # self.context['request'].user.set_password(validated_data['new_password'])
-        validated_data.pop("old_password")
-        instance.save
+        instance.set_password(validated_data["new_password"])
+        instance.save(update_fields=["password"])
         return instance

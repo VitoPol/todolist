@@ -58,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 ROOT_URLCONF = 'todolist.urls'
@@ -159,4 +161,4 @@ SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/categories'
 # SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 
-# LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'auth/'
