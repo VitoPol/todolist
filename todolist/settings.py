@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'social_django',
     # 'rest_framework_social_oauth2',
 
-    'core'
+    'core',
+    'goals',
 ]
 
 MIDDLEWARE = [
@@ -161,4 +162,4 @@ SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/categories'
 # SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 
-LOGOUT_REDIRECT_URL = 'auth/'
+# LOGOUT_REDIRECT_URL = 'auth/'
