@@ -20,9 +20,9 @@ class GoalDateFilter(rest_framework.FilterSet):
     }
 
 
-# class GoalCommentFilter(rest_framework.FilterSet):
-#     class Meta:
-#         model = GoalComment
-#         fields = {
-#             "goal": ("exact", "in"),
-#         }
+class GoalCommentFilter(rest_framework.FilterSet):
+    class Meta:
+        model = GoalComment
+        fields = {
+            "goal": ("exact",),
+        }
