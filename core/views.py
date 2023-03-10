@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.models import User
-from core.serializers import SignUpSerializer, ProfileRetrieveUpdateSerializer, PasswordUpdateSerializer
+from core.serializers import SignUpSerializer, UserSerializer, PasswordUpdateSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -34,7 +34,7 @@ class LoginView(APIView):
 
 
 class ProfileView(RetrieveUpdateDestroyAPIView):
-    serializer_class = ProfileRetrieveUpdateSerializer
+    serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
 
