@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    "django-filters"
+    "django_filters",
 
     # 'oauth2_provider',
     'social_django',

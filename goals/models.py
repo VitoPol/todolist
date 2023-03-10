@@ -43,7 +43,7 @@ class Goal(models.Model):
     created = models.DateTimeField(verbose_name="Дата создания")
     updated = models.DateTimeField(verbose_name="Дата последнего обновления")
     title = models.CharField(verbose_name="Название", max_length=255)
-    description = models.CharField(verbose_name="Название", null=True)
+    description = models.CharField(verbose_name="Название", max_length=255,null=True)
     due_date = models.DateField(verbose_name="Дата выполнения", null=True)
     status = models.PositiveSmallIntegerField(
         verbose_name="Статус", choices=Status.choices, default=Status.to_do
