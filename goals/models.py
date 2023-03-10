@@ -58,3 +58,17 @@ class Goal(models.Model):
             self.created = timezone.now()
         self.updated = timezone.now()
         return super().save(*args, **kwargs)
+
+
+class GoalComment(models.Model):
+    user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name="Дата создания")
+    updated = models.DateTimeField(verbose_name="Дата последнего обновления")
+    text = models.CharField(verbose_name="Текст", max_length=511, null=True)
+    goal = models.ForeignKey(Goal, verbose_name="Цель", on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.created = timezone.now()
+        self.updated = timezone.now()
+        return super().save(*args, **kwargs)

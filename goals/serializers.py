@@ -47,3 +47,21 @@ class GoalSerializer(serializers.ModelSerializer):
         model = Goal
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
+
+
+class GoalCommentCreateSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = Goal
+        fields = "__all__"
+        read_only_fields = ("id", "created", "updated", "user", "goal")
+
+
+class GoalCommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Goal
+        fields = "__all__"
+        read_only_fields = ("id", "created", "updated", "user", "goal")
