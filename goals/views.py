@@ -1,11 +1,10 @@
-from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 
-from goals.filters import GoalDateFilter, GoalCommentFilter
+from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment
 from goals.serializers import GoalCreateSerializer, GoalCategorySerializer, GoalCategoryCreateSerializer, \
     GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer
@@ -100,12 +99,10 @@ class GoalCommentListView(ListAPIView):
     filter_backends = [
         DjangoFilterBackend,
         filters.OrderingFilter,
-        filters.SearchFilter,
     ]
-    filterset_class = GoalCommentFilter
+    filterset_fields = ['goal']
     ordering_fields = ["created"]
     ordering = ["-created"]
-    search_fields = ["text"]
 
     def get_queryset(self):
         return Goal.objects.filter(
