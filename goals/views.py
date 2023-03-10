@@ -93,7 +93,7 @@ class GoalCommentCreateView(CreateAPIView):
 
 
 class GoalCommentListView(ListAPIView):
-    model = Goal
+    model = GoalComment
     permission_classes = [IsAuthenticated]
     serializer_class = GoalCommentSerializer
     pagination_class = LimitOffsetPagination
@@ -105,7 +105,7 @@ class GoalCommentListView(ListAPIView):
     filterset_class = GoalCommentFilter
     ordering_fields = ["created"]
     ordering = ["-created"]
-    search_fields = ["title", "description"]
+    search_fields = ["text"]
 
     def get_queryset(self):
         return Goal.objects.filter(
