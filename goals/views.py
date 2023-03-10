@@ -100,13 +100,13 @@ class GoalCommentListView(ListAPIView):
         DjangoFilterBackend,
         filters.OrderingFilter,
     ]
-    # filterset_fields = ['goal']
-    filterset_class = GoalCommentFilter
+    filterset_fields = ['goal']
+    # filterset_class = GoalCommentFilter
     ordering_fields = ["created"]
     ordering = ["-created"]
 
     def get_queryset(self):
-        return Goal.objects.filter(
+        return GoalComment.objects.filter(
             user=self.request.user
         )
 
