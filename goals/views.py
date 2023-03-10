@@ -100,7 +100,7 @@ class GoalCommentListView(ListAPIView):
         DjangoFilterBackend,
         filters.OrderingFilter,
     ]
-    filterset_fields = ['goal_id']
+    filterset_fields = ['goal']
     ordering_fields = ["created"]
     ordering = ["-created"]
 
