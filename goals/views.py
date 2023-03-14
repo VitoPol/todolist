@@ -1,3 +1,4 @@
+from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
@@ -5,9 +6,11 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 
 from goals.filters import GoalDateFilter, GoalCommentFilter
-from goals.models import GoalCategory, Goal, GoalComment
+from goals.models import GoalCategory, Goal, GoalComment, Board
+from goals.permisions import BoardPermissions
 from goals.serializers import GoalCreateSerializer, GoalCategorySerializer, GoalCategoryCreateSerializer, \
-    GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer
+    GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardSerializer, BoardListSerializer, \
+    BoardCreateSerializer
 
 
 class GoalCategoryCreateView(CreateAPIView):
@@ -103,7 +106,7 @@ class GoalCommentListView(ListAPIView):
     filterset_fields = ['goal']
     # filterset_class = GoalCommentFilter
     ordering_fields = ["created"]
-    ordering = ["-created"]
+    ordering = ["created"]
 
     def get_queryset(self):
         return GoalComment.objects.filter(
@@ -118,3 +121,44 @@ class GoalCommentView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return GoalComment.objects.filter(user=self.request.user)
+
+
+class BoardCreateView(CreateAPIView):
+    model = Board
+    permission_classes = [IsAuthenticated]
+    serializer_class = BoardCreateSerializer
+
+
+class BoardView(RetrieveUpdateDestroyAPIView):
+    model = Board
+    permission_classes = [IsAuthenticated, BoardPermissions]
+    serializer_class = BoardSerializer
+
+    def get_queryset(self):
+        return Board.objects.filter(participants__user=self.request.user, is_deleted=False)
+
+    def perform_destroy(self, instance: Board):
+        with transaction.atomic():
+            instance.is_deleted = True
+            instance.save()
+            instance.categories.update(is_deleted=True)
+            Goal.objects.filter(category__board=instance).update(
+                status=Goal.Status.archived
+            )
+        return instance
+
+
+class BoardListView(ListAPIView):
+    model = Board
+    permission_classes = [IsAuthenticated, BoardPermissions]
+    serializer_class = BoardListSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+    ]
+    ordering_fields = ["title"]
+    ordering = ["title"]
+
+    def get_queryset(self):
+        return Board.objects.filter(participants__user=self.request.user, is_deleted=False)
