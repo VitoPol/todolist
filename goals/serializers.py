@@ -1,5 +1,6 @@
 from django.db import transaction
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from core.models import User
 from core.serializers import UserSerializer
@@ -13,6 +14,8 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
         model = GoalCategory
         read_only_fields = ("id", "created", "updated", "user")
         fields = "__all__"
+
+
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):
@@ -58,6 +61,13 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
         model = GoalComment
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
+
+    def validate_board(self, value):
+        if not BoardParticipant.objects.filter(
+            user=self.user, board=value, role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
+        ).exists():
+            raise ValidationError("You have no permission")
+        return value
 
 
 class GoalCommentSerializer(serializers.ModelSerializer):

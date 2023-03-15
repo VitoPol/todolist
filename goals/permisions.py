@@ -27,13 +27,3 @@ class GoalCategoryPermissions(permissions.BasePermission):
         return BoardParticipant.objects.filter(
             user=request.user, board=obj.board, role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
         ).exists()
-
-
-class GoalCategoryCreatePermissions(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if not request.user.is_authenticated:
-            return False
-
-        return BoardParticipant.objects.filter(
-            user=request.user, board=obj.board, role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
-        ).exists()
