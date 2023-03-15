@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from goals.filters import GoalDateFilter, GoalCommentFilter
 from goals.models import GoalCategory, Goal, GoalComment, Board
-from goals.permisions import BoardPermissions, GoalCategoryPermissions
+from goals.permisions import BoardPermissions, GoalCategoryPermissions, GoalCategoryCreatePermissions
 from goals.serializers import GoalCreateSerializer, GoalCategorySerializer, GoalCategoryCreateSerializer, \
     GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardSerializer, BoardListSerializer, \
     BoardCreateSerializer
@@ -15,7 +15,7 @@ from goals.serializers import GoalCreateSerializer, GoalCategorySerializer, Goal
 
 class GoalCategoryCreateView(CreateAPIView):
     model = GoalCategory
-    permission_classes = [GoalCategoryPermissions]
+    permission_classes = [GoalCategoryCreatePermissions]
     serializer_class = GoalCategoryCreateSerializer
 
 
