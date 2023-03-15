@@ -19,7 +19,7 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
         if not BoardParticipant.objects.filter(
             user=self.context["request"].user, board=value, role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
         ).exists():
-            raise ValidationError("You do not have permission to perform this action.")
+            raise ValidationError("You do not have permission.")
         return value
 
 
