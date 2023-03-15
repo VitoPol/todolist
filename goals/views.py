@@ -15,13 +15,13 @@ from goals.serializers import GoalCreateSerializer, GoalCategorySerializer, Goal
 
 class GoalCategoryCreateView(CreateAPIView):
     model = GoalCategory
-    permission_classes = [IsAuthenticated]
+    permission_classes = [GoalCategoryPermissions]
     serializer_class = GoalCategoryCreateSerializer
 
 
 class GoalCategoryListView(ListAPIView):
     model = GoalCategory
-    permission_classes = [GoalCategoryPermissions]
+    permission_classes = [IsAuthenticated]
     serializer_class = GoalCategorySerializer
     pagination_class = LimitOffsetPagination
     filter_backends = [
@@ -35,9 +35,6 @@ class GoalCategoryListView(ListAPIView):
     search_fields = ["title"]
 
     def get_queryset(self):
-        # return GoalCategory.objects.filter(
-        #     user=self.request.user, is_deleted=False
-        # )
         return GoalCategory.objects.filter(
             board__participants__user=self.request.user, is_deleted=False
         )
