@@ -49,7 +49,7 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, GoalCategoryPermissions]
 
     def get_queryset(self):
-        return GoalCategory.objects.filter(user=self.request.user, is_deleted=False)
+        return GoalCategory.objects.filter(board__participants__user=self.request.user, is_deleted=False)
 
     def perform_destroy(self, instance):
         instance.is_deleted = True
@@ -159,7 +159,6 @@ class BoardListView(ListAPIView):
     serializer_class = BoardListSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = [
-        DjangoFilterBackend,
         filters.OrderingFilter,
     ]
     ordering_fields = ["title"]
