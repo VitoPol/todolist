@@ -15,7 +15,12 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated", "user")
         fields = "__all__"
 
-
+    def validate_board(self, value):
+        if not BoardParticipant.objects.filter(
+            user=self.user, board=value, role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
+        ).exists():
+            raise ValidationError("You do not have permission to perform this action.")
+        return value
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):
@@ -61,13 +66,6 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
         model = GoalComment
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
-
-    def validate_board(self, value):
-        if not BoardParticipant.objects.filter(
-            user=self.user, board=value, role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
-        ).exists():
-            raise ValidationError("You have no permission")
-        return value
 
 
 class GoalCommentSerializer(serializers.ModelSerializer):
