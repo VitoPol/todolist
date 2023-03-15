@@ -29,7 +29,7 @@ class GoalCategoryListView(ListAPIView):
         filters.OrderingFilter,
         filters.SearchFilter,
     ]
-    filterset_fields = ['goal']
+    filterset_fields = ['board']
     ordering_fields = ["title", "created"]
     ordering = ["title"]
     search_fields = ["title"]
