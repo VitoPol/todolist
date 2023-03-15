@@ -21,7 +21,7 @@ class GoalCategoryCreateView(CreateAPIView):
 
 class GoalCategoryListView(ListAPIView):
     model = GoalCategory
-    permission_classes = [IsAuthenticated]
+    permission_classes = [GoalCategoryPermissions]
     serializer_class = GoalCategorySerializer
     pagination_class = LimitOffsetPagination
     filter_backends = [
@@ -46,7 +46,7 @@ class GoalCategoryListView(ListAPIView):
 class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     model = GoalCategory
     serializer_class = GoalCategorySerializer
-    permission_classes = [IsAuthenticated, GoalCategoryPermissions]
+    permission_classes = [GoalCategoryPermissions]
 
     def get_queryset(self):
         return GoalCategory.objects.filter(board__participants__user=self.request.user, is_deleted=False)
@@ -136,7 +136,7 @@ class BoardCreateView(CreateAPIView):
 
 class BoardView(RetrieveUpdateDestroyAPIView):
     model = Board
-    permission_classes = [IsAuthenticated, BoardPermissions]
+    permission_classes = [BoardPermissions]
     serializer_class = BoardSerializer
 
     def get_queryset(self):
@@ -155,7 +155,7 @@ class BoardView(RetrieveUpdateDestroyAPIView):
 
 class BoardListView(ListAPIView):
     model = Board
-    permission_classes = [IsAuthenticated, BoardPermissions]
+    permission_classes = [BoardPermissions]
     serializer_class = BoardListSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = [
