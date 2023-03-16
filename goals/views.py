@@ -104,14 +104,11 @@ class GoalCommentListView(ListAPIView):
         filters.OrderingFilter,
     ]
     filterset_fields = ['goal']
-    # filterset_class = GoalCommentFilter
     ordering_fields = ["created"]
     ordering = ["created"]
 
     def get_queryset(self):
-        return GoalComment.objects.filter(
-            user=self.request.user
-        )
+        return GoalComment.objects.filter(goal__category__board__participants__user=self.request.user)
 
 
 class GoalCommentView(RetrieveUpdateDestroyAPIView):
@@ -120,7 +117,7 @@ class GoalCommentView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return GoalComment.objects.filter(user=self.request.user)
+        return GoalComment.objects.filter(goal__category__board__participants__user=self.request.user)
 
 
 class BoardCreateView(CreateAPIView):
