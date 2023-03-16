@@ -78,6 +78,13 @@ class GoalCommentSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user", "goal")
 
+    def validate_text(self, value):
+        if not BoardParticipant.objects.filter(user=self.context["request"].user, board=self.goal.category.board,
+                                               role__in=[BoardParticipant.Role.owner,
+                                                         BoardParticipant.Role.writer]).exists():
+            raise serializers.ValidationError("you must be owner or writer")
+        return value
+
 
 class BoardCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
