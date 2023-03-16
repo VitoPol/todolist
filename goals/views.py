@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment, Board
-from goals.permisions import BoardPermissions, GoalCategoryPermissions
+from goals.permisions import BoardPermissions, GoalCategoryPermissions, GoalPermissions
 from goals.serializers import GoalCreateSerializer, GoalCategorySerializer, GoalCategoryCreateSerializer, \
     GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer, BoardSerializer, BoardListSerializer, \
     BoardCreateSerializer
@@ -76,15 +76,13 @@ class GoalListView(ListAPIView):
     search_fields = ["title", "description"]
 
     def get_queryset(self):
-        return Goal.objects.filter(
-            user=self.request.user
-        )
+        return Goal.objects.filter(category__board__participants__user=self.request.user)
 
 
 class GoalView(RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = GoalSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [GoalPermissions]
 
     def get_queryset(self):
         return Goal.objects.filter(user=self.request.user)

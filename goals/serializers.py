@@ -42,10 +42,12 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
     def validate_category(self, value):
         if value.is_deleted:
-            raise serializers.ValidationError("not allowed in deleted category")
+            raise serializers.ValidationError("Not allowed in deleted category")
 
-        if value.user != self.context["request"].user:
-            raise serializers.ValidationError("not owner of category")
+        if not BoardParticipant.objects.filter(
+            user=self.context["request"].user, board=value, role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer]
+        ).exists():
+            raise serializers.ValidationError("You are not owner or writer")
 
         return value
 
