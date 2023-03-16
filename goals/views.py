@@ -85,7 +85,7 @@ class GoalView(RetrieveUpdateDestroyAPIView):
     permission_classes = [GoalPermissions]
 
     def get_queryset(self):
-        return Goal.objects.filter(user=self.request.user)
+        return Goal.objects.filter(category__board__participants__user=self.request.user)
 
 
 class GoalCommentCreateView(CreateAPIView):
