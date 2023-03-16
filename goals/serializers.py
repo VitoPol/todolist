@@ -69,8 +69,8 @@ class GoalCommentCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
 
-    def validate_text(self, value):
-        if not BoardParticipant.objects.filter(user=self.context["request"].user, board=self.goal.category.board,
+    def validate_goal(self, value):
+        if not BoardParticipant.objects.filter(user=self.context["request"].user, board=value.category.board,
                                                role__in=[BoardParticipant.Role.owner,
                                                          BoardParticipant.Role.writer]).exists():
             raise serializers.ValidationError("you must be owner or writer")
