@@ -3,6 +3,8 @@ name: Build and deploy
 on:
   push:
     branches: [ "master" ]
+  repository_dispatch:
+    types: [ on-demand-test ]
 
 env:
   version: $GITHUB_RUN_ID
