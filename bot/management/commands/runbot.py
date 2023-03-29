@@ -51,6 +51,15 @@ class Command(BaseCommand):
                     self.state = "def"
                 elif not GoalCategory.objects.filter(user=user.user, title=message, is_deleted=False).exists():
                     self.tg_client.send_message(chat_id, "Нет такой категории")
+                else:
+                    self.choisen_cat = GoalCategory.objects.get(user=user.user, title=message, is_deleted=False)
+                    self.tg_client.send_message(chat_id, "Введи заголовок цели")
+                    self.state = "set title"
+            case "set title":
+                if message != "/cancel":
+                    Goal.objects.create(user=user.user, title=message, category=self.choisen_cat)
+                    self.tg_client.send_message(chat_id, "Суксесс")
+                self.state = "def"
 
     def handle_main(self, item: dict):
         if not TgUser.objects.filter(tg_user_id=item['message']["from"]["id"]).exists():
@@ -74,4 +83,3 @@ class Command(BaseCommand):
             for item in res.result:
                 offset = item['update_id'] + 1
                 self.handle_main(item)
-
