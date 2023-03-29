@@ -1,10 +1,10 @@
 name: Build and deploy
 
-on:
-  push:
-    branches: [ "master" ]
-  workflow_dispatch:
-    pass
+on: workflow_dispatch
+#  push:
+#    branches: [ "master" ]
+#  workflow_dispatch:
+#    pass
 
 env:
   version: $GITHUB_RUN_ID
