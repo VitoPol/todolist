@@ -41,6 +41,7 @@ jobs:
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       VK_KEY: ${{ secrets.VK_KEY }}
       VK_SECRET: ${{ secrets.VK_SECRET }}
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       version: $GITHUB_RUN_ID
 
     steps:

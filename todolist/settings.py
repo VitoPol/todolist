@@ -27,8 +27,8 @@ load_dotenv()
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# DEBUG = os.environ.get("DEBUG", True)
+# DEBUG = False
+DEBUG = os.environ.get("DEBUG", True)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     'core',
     'goals',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,5 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ.get("VK_SECRET", None)
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/categories'
+
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
