@@ -28,4 +28,4 @@ class VerifyView(UpdateAPIView):
         instance.user = self.request.user
         instance.save()
         tg_client.send_message(instance.tg_chat_id, f"Верификация прошла успешно")
-        return Response(self.serializer_class.data)
+        return Response(self.get_serializer(instance).data)

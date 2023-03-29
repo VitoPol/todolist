@@ -43,3 +43,14 @@ services:
       retries: 10
     volumes:
       - ./db_data:/var/lib/postgresql/data
+  bot:
+    build:
+      context: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./.docker_env:/app/.env
+    command: bash -c "python manage.py runbot"
